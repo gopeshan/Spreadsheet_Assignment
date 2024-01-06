@@ -25,4 +25,4 @@ void clear_cell(ROW row, COL col);
 // retain any reference to it after the function returns.
 char *get_textual_value(ROW row, COL col);
 
-#endif //ASSIGNMENT_MODEL_H
+#endif // ASSIGNMENT_MODEL_H
