@@ -6,8 +6,11 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
-#define DEFAULT_EDIT_SIZE 128
+#define MAX_LEN 256
+
+#define DEFAULT_EDIT_SIZE 256
 
 // Current cur_row and column.
 static ROW cur_row = ROW_1;
@@ -126,9 +129,6 @@ int main() {
 
     /* MAIN LOOP */
 
-    // Initialize data structure.
-    model_init();
-
     // String of blanks used by main loop.
     char blanks[total_width + 1];
     for (size_t i = 0; i < total_width; i++)
@@ -140,13 +140,15 @@ int main() {
         mvaddnstr(3, 1, blanks, CELL_DISPLAY_WIDTH);
         mvprintw(3, CELL_DISPLAY_WIDTH / 2, "%c%d", cur_col + 'A', cur_row + 1);
 
+
         // Show the textual representation of the current cell in the edit field.
         if (edit_text != NULL)
             free(edit_text);
         edit_text = get_textual_value(cur_row, cur_col);
-        edit_text_capacity = edit_text == NULL ? 0 : strlen(edit_text);
-        edit_text_length = edit_text_capacity;
+        edit_text_capacity = edit_text == NULL ? 0 : MAX_LEN;
+        edit_text_length = strnlen(edit_text,MAX_LEN);
         mvaddnstr(1, 1, blanks, total_width - 2);
+
         if (edit_text != NULL)
             mvaddnstr(1, 1, edit_text, total_width - 2);
 
